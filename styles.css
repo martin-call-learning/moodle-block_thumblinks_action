@@ -1,0 +1,16 @@
+.block_thumblinks_action .thumbnail {
+    background-size: cover;
+    min-height: 170px;
+}
+.block_thumblinks_action .thumbnail,
+.block_thumblinks_action .thumbnail:hover,
+.block_thumblinks_action .thumbnail:focus,
+.block_thumblinks_action .thumbnail:visited,
+.block_thumblinks_action .thumbnail:active {
+    text-decoration: initial;
+    font-weight: bold;
+}
+.block_thumblinks_action .thumbnail .title {
+    opacity: 0.85;
+    background-color: var(--white);
+}
