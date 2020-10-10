@@ -27,6 +27,7 @@ $string['headerconfig'] = 'Config section header';
 $string['thumblinks_action:addinstance'] = 'Add a thumblinks_action block';
 $string['thumblinks_action:myaddinstance'] = 'Add a thumblinks_action block to my moodle';
 $string['pluginname'] = 'Thumbnail links and action';
+$string['title'] = 'Thumbnail links and action';
 
 $string['config:title'] = 'Title';
 $string['config:cta'] = 'CALL to Action';

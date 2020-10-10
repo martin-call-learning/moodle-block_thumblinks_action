@@ -32,7 +32,7 @@ use renderer_base;
 use templatable;
 
 /**
- * Class containing data for my mcms block.
+ * Class containing data for thumblink_action block.
  *
  * @package    block_mcms
  * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>

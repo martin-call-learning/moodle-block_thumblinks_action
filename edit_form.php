@@ -43,7 +43,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
 
         // Title of the block.
         $mform->addElement('text', 'config_title', get_string('config:title', 'block_thumblinks_action'));
-        $mform->setDefault('config_title', 'default value');
+        $mform->setDefault('config_title', get_string('title', 'block_thumblinks_action'));
         $mform->setType('config_title', PARAM_TEXT);
 
         // The CTA Link.

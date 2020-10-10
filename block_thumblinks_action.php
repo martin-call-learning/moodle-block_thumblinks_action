@@ -41,7 +41,16 @@ class block_thumblinks_action extends block_base {
      * @throws coding_exception
      */
     public function init() {
-        $this->title = get_string('pluginname', 'block_thumblinks_action');
+        $this->title = get_string('title', 'block_thumblinks_action');
+    }
+
+    /**
+     * Update the block title from config values
+     */
+    public function specialization() {
+        if (!empty($this->config->title)) {
+            $this->title = $this->config->title;
+        }
     }
 
     /**
@@ -66,10 +75,12 @@ class block_thumblinks_action extends block_base {
         $this->content->icons = array();
         $this->content->footer = '';
 
-        $this->title = $this->config->title;
+
 
         $this->content->text = '';
         if ($this->config) {
+            $this->title = $this->config->title; // Set the title according to the values in the form.
+
             $renderer = $this->page->get_renderer('core');
             $titles = empty($this->config->thumbtitle)?[]: $this->config->thumbtitle;
             $urls = empty($this->config->thumburl)?[]: $this->config->thumburl;
@@ -113,21 +124,9 @@ class block_thumblinks_action extends block_base {
      * @return bool
      */
     public function has_config() {
-        return true;
+        return false;
     }
 
-    /**
-     * Cron Job
-     *
-     * @return bool
-     */
-    public function cron() {
-        mtrace("Hey, my cron script is running");
-
-        // Do something.
-
-        return true;
-    }
 
     /**
      * Serialize and store config data
