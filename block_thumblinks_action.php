@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use block_thumblinks_action\output\thumblinks_actions;
+use block_thumblinks_action\output\thumblinks_action;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -75,22 +75,20 @@ class block_thumblinks_action extends block_base {
         $this->content->icons = array();
         $this->content->footer = '';
 
-
-
         $this->content->text = '';
         if ($this->config) {
             $this->title = $this->config->title; // Set the title according to the values in the form.
 
             $renderer = $this->page->get_renderer('core');
-            $titles = empty($this->config->thumbtitle)?[]: $this->config->thumbtitle;
-            $urls = empty($this->config->thumburl)?[]: $this->config->thumburl;
-            $images = empty($this->config->thumbimage)?[]: $this->config->thumbimage;
+            $titles = empty($this->config->thumbtitle) ? [] : $this->config->thumbtitle;
+            $urls = empty($this->config->thumburl) ? [] : $this->config->thumburl;
+            $images = empty($this->config->thumbimage) ? [] : $this->config->thumbimage;
 
             $this->content->text = $renderer->render(
-                new thumblinks_actions(
+                new thumblinks_action(
                     $titles,
-                    $urls,
                     $images,
+                    $urls,
                     $this->config->cta,
                     $this->config->ctatitle,
                     $this->context->id
@@ -127,23 +125,40 @@ class block_thumblinks_action extends block_base {
         return false;
     }
 
-
     /**
      * Serialize and store config data
+     *
+     * @param stdClass $data
+     * @param false $nolongerused
+     * @throws coding_exception
      */
     public function instance_config_save($data, $nolongerused = false) {
         global $DB;
 
         $config = clone($data);
         // Save the images.
-        if ($data->thumbimage) {
-            foreach ($data->thumbimage as $index => $images) {
+        if ($config->thumbimage) {
+            foreach ($config->thumbimage as $index => $images) {
                 file_save_draft_area_files($images,
                     $this->context->id,
                     'block_thumblinks_action',
                     'images',
                     $index,
                     array('subdirs' => true));
+            }
+            // Here we make sure we copy the image id into the
+            // block parameter. This is then used in save_data
+            // to setup the block to the right image.
+            $fs = get_file_storage();
+            $files = $fs->get_area_files($this->context->id,
+                'block_thumblinks_action',
+                'images'
+            );
+            foreach ($files as $file) {
+                if (in_array($file->get_filename(), array('.', '..'))) {
+                    continue;
+                }
+                $config->thumbimage[$file->get_itemid()] = $file->get_id();
             }
         }
         parent::instance_config_save($config, $nolongerused);

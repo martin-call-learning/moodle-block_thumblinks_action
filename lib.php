@@ -35,7 +35,7 @@ defined('MOODLE_INTERNAL') || die();
  * Get plugin file for this block (identical to HTML block)
  *
  * @param stdClass $course course object
- * @param stdClass $birecord_or_cm block instance record
+ * @param stdClass $birecordorcm block instance record
  * @param stdClass $context context object
  * @param string $filearea file area
  * @param array $args extra arguments
@@ -49,7 +49,8 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @category  files
  */
-function block_thumblinks_action_pluginfile($course, $birecord_or_cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
+function block_thumblinks_action_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload,
+    array $options = array()) {
     global $DB, $CFG, $USER;
 
     if ($context->contextlevel != CONTEXT_BLOCK) {
@@ -86,11 +87,12 @@ function block_thumblinks_action_pluginfile($course, $birecord_or_cm, $context, 
     $itemid = array_shift($args);
     $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
 
-    if (!$file = $fs->get_file($context->id, 'block_thumblinks_action', $filearea, $itemid, $filepath, $filename) or $file->is_directory()) {
+    if (!$file = $fs->get_file($context->id, 'block_thumblinks_action', $filearea, $itemid, $filepath, $filename) or
+        $file->is_directory()) {
         send_file_not_found();
     }
 
-    if ($parentcontext = context::instance_by_id($birecord_or_cm->parentcontextid, IGNORE_MISSING)) {
+    if ($parentcontext = context::instance_by_id($birecordorcm->parentcontextid, IGNORE_MISSING)) {
         if ($parentcontext->contextlevel == CONTEXT_USER) {
             $forcedownload = true;
         }
@@ -104,8 +106,8 @@ function block_thumblinks_action_pluginfile($course, $birecord_or_cm, $context, 
 /**
  * Perform global search replace such as when migrating site to new URL.
  *
- * @param  $search
- * @param  $replace
+ * @param  string $search
+ * @param  string $replace
  * @return void
  */
 function block_thumblinks_action_global_db_replace($search, $replace) {
@@ -116,8 +118,10 @@ function block_thumblinks_action_global_db_replace($search, $replace) {
         $config = unserialize(base64_decode($instance->configdata));
         if (isset($config->text) and is_string($config->text)) {
             $config->text = str_replace($search, $replace, $config->text);
-            $DB->update_record('block_instances', ['id' => $instance->id,
-                'configdata' => base64_encode(serialize($config)), 'timemodified' => time()]);
+            $DB->update_record('block_instances', [
+                'id' => $instance->id,
+                'configdata' => base64_encode(serialize($config)),
+                'timemodified' => time()]);
         }
     }
     $instances->close();

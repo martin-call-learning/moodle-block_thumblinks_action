@@ -27,15 +27,15 @@
     <div class="container">
         <div class="row">
             {{#thumbnails}}
-                <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0"  {{#image}} style="background-image: url({{.}});" {{/image}} href="{{utl}}">
-                        <div class="title w-100 p-1 p-l-2 mt-5">{{ title }}</div>
+                <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0"  {{#image}} style="background-image: url({{.}});" {{/image}} href="{{url}}">
+                    <div class="title w-100 p-1 p-l-2 mt-5">{{ title }}</div>
                 </a>
             {{/thumbnails}}
         </div>
     </div>
     <div class="container text-center mt-5">
-        <a class="btn btn-primary" href="{{ctatitle}}">
-            {{ctatitle }}
+        <a class="btn btn-primary" href="{{ cta }}">
+            {{ ctatitle }}
         </a>
     </div>
 </div>

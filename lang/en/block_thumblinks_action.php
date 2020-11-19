@@ -33,8 +33,8 @@ $string['config:title'] = 'Title';
 $string['config:cta'] = 'CALL to Action';
 $string['config:ctatitle'] = 'CALL to Action Title';
 
-$string['config:thumbtitle'] = 'Thumbnail title';
-$string['config:thumbimage'] = 'Thumbnail image';
-$string['config:thumburl'] = 'Thumbnail url';
+$string['config:thumbtitle'] = 'Thumbnail {no} Title';
+$string['config:thumbimage'] = 'Thumbnail {no} Image';
+$string['config:thumburl'] = 'Thumbnail {no} URL';
 
-$string['addmorethumbnails'] = ' Add more thumbnails';
+$string['addmorethumbnails'] = 'Add more thumbnails';
