@@ -51,7 +51,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 function block_thumblinks_action_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload,
     array $options = array()) {
-    global $DB, $CFG, $USER;
+    global $CFG, $USER;
 
     if ($context->contextlevel != CONTEXT_BLOCK) {
         send_file_not_found();

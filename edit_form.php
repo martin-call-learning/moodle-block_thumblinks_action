@@ -66,7 +66,6 @@ class block_thumblinks_action_edit_form extends block_edit_form {
      * @throws coding_exception
      */
     protected function add_thubmnail_elements($mform) {
-        global $DB;
         $repeatarray = array();
         $repeatedoptions = array();
 

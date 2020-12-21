@@ -133,8 +133,6 @@ class block_thumblinks_action extends block_base {
      * @throws coding_exception
      */
     public function instance_config_save($data, $nolongerused = false) {
-        global $DB;
-
         $config = clone($data);
         // Save the images.
         if ($config->thumbimage) {
@@ -170,7 +168,6 @@ class block_thumblinks_action extends block_base {
      * @return bool
      */
     public function instance_delete() {
-        global $DB;
         $fs = get_file_storage();
         $fs->delete_area_files($this->context->id, 'block_thumblinks_action');
         return true;

@@ -51,7 +51,6 @@ class block_thumblinks_action_test extends advanced_testcase {
      * Basic setup for these tests.
      */
     public function setUp() {
-        global $CFG;
         $this->resetAfterTest(true);
         $this->user = $this->getDataGenerator()->create_user();
         $this->setUser($this->user);
@@ -95,12 +94,12 @@ class block_thumblinks_action_test extends advanced_testcase {
     <div class="container">
         <div class="row">
                 <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0" '
-            . '  style="background-image: url(https://www.example.com/moodle/pluginfile.php/188001/'
+            . '  style="background-image: url(https://www.example.com/moodle/pluginfile.php/'.$block->context->id.'/'
             . 'block_thumblinks_action/images/0/img1.png);"  href="http://moodle.com/0">
                     <div class="title w-100 p-1 p-l-2 mt-5">Title 0</div>
                 </a>
                 <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0"'
-            . '   style="background-image: url(https://www.example.com/moodle/pluginfile.php/188001/'
+            . '   style="background-image: url(https://www.example.com/moodle/pluginfile.php/'.$block->context->id.'/'
             . 'block_thumblinks_action/images/1/img2.png);"  href="http://moodle.com/1">
                     <div class="title w-100 p-1 p-l-2 mt-5">Title 1</div>
                 </a>
