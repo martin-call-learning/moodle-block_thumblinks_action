@@ -18,23 +18,21 @@
  * Strings for component 'block_thumblinks_action', language 'en'
  *
  * @package    block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>
+ * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['addmorethumbnails'] = 'Add {no} more thumbnails';
 $string['blockstring'] = 'Block string';
-$string['headerconfig'] = 'Config section header';
-$string['thumblinks_action:addinstance'] = 'Add a thumblinks_action block';
-$string['thumblinks_action:myaddinstance'] = 'Add a thumblinks_action block to my moodle';
-$string['pluginname'] = 'Thumbnail links and action';
-$string['title'] = 'Thumbnail links and action';
-
 $string['config:title'] = 'Title';
 $string['config:cta'] = 'CALL to Action';
 $string['config:ctatitle'] = 'CALL to Action Title';
-
 $string['config:thumbtitle'] = 'Thumbnail {no} Title';
 $string['config:thumbimage'] = 'Thumbnail {no} Image';
 $string['config:thumburl'] = 'Thumbnail {no} URL';
+$string['headerconfig'] = 'Config section header';
+$string['pluginname'] = 'Thumbnail links and action';
+$string['removelastthumb'] = 'Remove last thumbnail';
+$string['thumblinks_action:addinstance'] = 'Add a thumblinks_action block';
+$string['thumblinks_action:myaddinstance'] = 'Add a thumblinks_action block to my moodle';
 
-$string['addmorethumbnails'] = 'Add more thumbnails';

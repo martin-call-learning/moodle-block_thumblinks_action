@@ -37,7 +37,7 @@ Feature: Adding and configuring Thumbnails links action block
     And I configure the "Thumbnail links and action" block
     Then I should see "Title"
     And I set the field "Title" to "Trainings"
-    And I press "Add more thumbnails"
+    And I press "Add 1 more thumbnails"
     Given I set the field "Thumbnail 1 Title" to "First Training"
     Given I set the field "Thumbnail 1 URL" to "http://www.myurl1.fr"
     Given I set the field "Thumbnail 2 Title" to "Second Training"

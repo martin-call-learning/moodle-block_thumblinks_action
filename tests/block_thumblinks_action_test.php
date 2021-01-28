@@ -18,7 +18,7 @@
  * Base class for unit tests for block_thumblinks_action.
  *
  * @package   block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>
+ * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Unit tests for block_thumblinks_action
  *
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>
+ * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action_test extends advanced_testcase {
@@ -89,30 +89,12 @@ class block_thumblinks_action_test extends advanced_testcase {
         $block = block_instance_by_id($this->block->instance->id);
         $content = $block->get_content();
         $this->assertNotNull($content->text);
-
-        $expected = '<div  class="block-thumblinks-action block-cards">
-    <div class="container">
-        <div class="row">
-                <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0" '
-            . '  style="background-image: url(https://www.example.com/moodle/pluginfile.php/'.$block->context->id.'/'
-            . 'block_thumblinks_action/images/0/img1.png);"  href="http://moodle.com/0">
-                    <div class="title w-100 p-1 p-l-2 mt-5">Title 0</div>
-                </a>
-                <a class="thumbnail col mx-2 my-1 d-flex flex-column justify-content-center p-0"'
-            . '   style="background-image: url(https://www.example.com/moodle/pluginfile.php/'.$block->context->id.'/'
-            . 'block_thumblinks_action/images/1/img2.png);"  href="http://moodle.com/1">
-                    <div class="title w-100 p-1 p-l-2 mt-5">Title 1</div>
-                </a>
-        </div>
-    </div>
-    <div class="container text-center mt-5">
-        <a class="btn btn-primary" href="https://www.moodle.org">
-            Moodle forever
-        </a>
-    </div>
-</div>';
-        $text = preg_replace('/id="block-thumblinks-action([^"]+)"/i', '', $content->text);
-        $this->assertEquals($expected, $text);
+        $this->assertContains('background-image: url(https://www.example.com/moodle/pluginfile.php/', $content->text);
+        $this->assertContains('block_thumblinks_action/images/0/img1.png', $content->text);
+        $this->assertContains('block_thumblinks_action/images/1/img2.png', $content->text);
+        $this->assertContains('Title 0', $content->text);
+        $this->assertContains('Title 1', $content->text);
+        $this->assertContains('Moodle forever', $content->text);
     }
 
     /**
@@ -153,6 +135,7 @@ class block_thumblinks_action_test extends advanced_testcase {
             'cta' => 'https://www.moodle.org',
             'ctatitle' => 'Moodle forever'
         ];
+        $configdata->thumbimage = [];
         foreach ($imagesnames as $index => $filename) {
             $draftitemid = file_get_unused_draft_itemid();
             $filerecord = array(
@@ -166,12 +149,13 @@ class block_thumblinks_action_test extends advanced_testcase {
             // Create an area to upload the file.
             $fs = get_file_storage();
             // Create a file from the string that we made earlier.
-            $files[] = $fs->create_file_from_pathname($filerecord,
+            $file = $fs->create_file_from_pathname($filerecord,
                 $CFG->dirroot . '/blocks/thumblinks_action/tests/fixtures/bookmark-new.png');
             $configdata->thumbtitle[] = 'Title ' . $index;
             $configdata->thumburl[] = 'http://moodle.com/' . $index;
+            $configdata->thumbimage[] = $file->get_itemid();
         }
-        $configdata->thumbimage = [$files[0]->get_itemid(), $files[1]->get_itemid()];
         $block->instance_config_save((object) $configdata);
     }
 }
+

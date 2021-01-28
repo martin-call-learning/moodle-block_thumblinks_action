@@ -18,7 +18,7 @@
  * Thumblinks Action block implementation.
  *
  * @package    block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>
+ * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * Class block_thumblinks_action
  *
  * @package    block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning>
+ * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action extends block_base {
@@ -41,7 +41,7 @@ class block_thumblinks_action extends block_base {
      * @throws coding_exception
      */
     public function init() {
-        $this->title = get_string('title', 'block_thumblinks_action');
+        $this->title = get_string('pluginname', 'block_thumblinks_action');
     }
 
     /**
@@ -195,9 +195,18 @@ class block_thumblinks_action extends block_base {
         if (!$fs->is_area_empty($fromcontext->id, 'block_thumblinks_action', 'images', 0, false)) {
             for ($itemid = 0; $itemid < $numthumbnails; $itemid++) {
                 $draftitemid = 0;
-                file_prepare_draft_area($draftitemid, $fromcontext->id, 'block_thumblinks_action', 'images', $itemid,
+                file_prepare_draft_area(
+                    $draftitemid,
+                    $fromcontext->id,
+                    'block_thumblinks_action',
+                    'images',
+                    $itemid,
                     array('subdirs' => true));
-                file_save_draft_area_files($draftitemid, $this->context->id, 'block_thumblinks_action', 'images', $itemid,
+                file_save_draft_area_files(
+                    $draftitemid,
+                    $this->context->id,
+                    'block_thumblinks_action',
+                    'images', $itemid,
                     array('subdirs' => true));
             }
         }
