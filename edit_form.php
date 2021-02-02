@@ -118,7 +118,6 @@ class block_thumblinks_action_edit_form extends block_edit_form {
         if (!empty($this->block->config) && is_object($this->block->config)) {
             $filefields = new stdClass();
             $numthumbnails = $this->get_current_repeats();
-            require_sesskey(); // This is because we don't use file_get_submitted_draft_itemid.
             for ($index = 0; $index < $numthumbnails; $index++) {
                 $fieldname = 'config_thumbimage';
                 $filefields->{$fieldname}[$index] = array();
