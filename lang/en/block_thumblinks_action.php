@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['contentnoconfig'] = 'Configure the block to see your thumbnail links & action.';
 $string['addmorethumbnails'] = 'Add {no} more thumbnails';
 $string['blockstring'] = 'Block string';
 $string['config:title'] = 'Title';
@@ -35,4 +36,3 @@ $string['pluginname'] = 'Thumbnail links and action';
 $string['removelastthumb'] = 'Remove last thumbnail';
 $string['thumblinks_action:addinstance'] = 'Add a thumblinks_action block';
 $string['thumblinks_action:myaddinstance'] = 'Add a thumblinks_action block to my moodle';
-

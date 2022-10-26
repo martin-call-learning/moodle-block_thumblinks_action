@@ -29,7 +29,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action_edit_form extends block_edit_form {
-
     /**
      * Form definition
      *
@@ -37,7 +36,6 @@ class block_thumblinks_action_edit_form extends block_edit_form {
      * @throws coding_exception
      */
     protected function specific_definition($mform) {
-
         // Section header title according to language file.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
@@ -49,14 +47,13 @@ class block_thumblinks_action_edit_form extends block_edit_form {
         // The CTA Link.
         $mform->addElement('text', 'config_cta', get_string('config:cta', 'block_thumblinks_action'));
         $mform->setDefault('config_cta', '');
-        $mform->setType('config_cta', PARAM_LOCALURL);
+        $mform->setType('config_cta', PARAM_URL);
         // The CTA title.
         $mform->addElement('text', 'config_ctatitle', get_string('config:ctatitle', 'block_thumblinks_action'));
         $mform->setDefault('config_ctatitle', '');
         $mform->setType('config_ctatitle', PARAM_TEXT);
 
         $this->add_thubmnail_elements($mform);
-
     }
 
     /**
@@ -69,8 +66,11 @@ class block_thumblinks_action_edit_form extends block_edit_form {
         $repeatarray = array();
         $repeatedoptions = array();
 
-        $repeatarray[] = $mform->createElement('text', 'config_thumbtitle',
-            get_string('config:thumbtitle', 'block_thumblinks_action'));
+        $repeatarray[] = $mform->createElement(
+            'text',
+            'config_thumbtitle',
+            get_string('config:thumbtitle', 'block_thumblinks_action')
+        );
         $repeatedoptions['config_thumbtitle']['type'] = PARAM_TEXT;
 
         $repeatarray[] = $mform->createElement(
@@ -83,13 +83,18 @@ class block_thumblinks_action_edit_form extends block_edit_form {
         $repeatedoptions['config_thumbimage']['type'] = PARAM_RAW;
 
         // The CTA Link.
-        $repeatarray[] = $mform->createElement('text', 'config_thumburl',
-            get_string('config:thumburl', 'block_thumblinks_action'));
-        $repeatedoptions['config_thumburl']['type'] = PARAM_LOCALURL;
+        $repeatarray[] = $mform->createElement(
+            'text',
+            'config_thumburl',
+            get_string('config:thumburl', 'block_thumblinks_action')
+        );
+        $repeatedoptions['config_thumburl']['type'] = PARAM_URL;
 
         $numthumbnails = $this->get_current_repeats();
 
-        $this->repeat_elements($repeatarray, $numthumbnails,
+        $this->repeat_elements(
+            $repeatarray,
+            $numthumbnails,
             $repeatedoptions,
             'thumb_repeats',
             'thumb_add_fields',
@@ -99,7 +104,6 @@ class block_thumblinks_action_edit_form extends block_edit_form {
             'thumb_remove_fields',
             get_string('removelastthumb', 'block_thumblinks_action')
         );
-
     }
 
     /**
@@ -124,16 +128,17 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                 // Here we could try to use the file_get_submitted_draft_itemid, but it expects to have an itemid defined
                 // Which is not what we have right now, we just have a flat list.
                 $param = optional_param_array($fieldname, 0, PARAM_INT);
-                $draftitemid = $param[$index];
                 if (!empty($param[$index])) {
                     $draftitemid = $param[$index];
                 }
-                file_prepare_draft_area($draftitemid,
+                file_prepare_draft_area(
+                    $draftitemid,
                     $this->block->context->id,
                     'block_thumblinks_action',
                     'images',
                     $index,
-                    $this->get_file_manager_options());
+                    $this->get_file_manager_options()
+                );
 
                 $filefields->{$fieldname}[$index] = $draftitemid;
             }
@@ -142,9 +147,11 @@ class block_thumblinks_action_edit_form extends block_edit_form {
     }
 
     /**
-     * Get number of repeats
+     * Get number of repeats.
+     *
+     * @return int the number of repeats.
      */
-    protected function get_current_repeats() {
+    protected function get_current_repeats(): int {
         $thumbtitlecount = empty($this->block->config->thumbtitle) ? 0 : count($this->block->config->thumbtitle);
         $thumbimgcount = empty($this->block->config->thumbimage) ? 0 : count($this->block->config->thumbimage);
         return max(1, $thumbtitlecount, $thumbimgcount);
@@ -155,7 +162,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
      *
      * @return array
      */
-    protected function get_file_manager_options() {
+    protected function get_file_manager_options(): array {
         return array('subdirs' => 0,
             'maxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
             'maxfiles' => 1,
@@ -189,14 +196,18 @@ class block_thumblinks_action_edit_form extends block_edit_form {
      * @return int no of repeats of element in this page
      * @throws coding_exception
      */
-    public function repeat_elements($elementobjs, $repeats, $options, $repeathiddenname,
+    public function repeat_elements(
+        $elementobjs,
+        $repeats,
+        $options,
+        $repeathiddenname,
         $addfieldsname,
         $addfieldsno = 5,
         $addstring = null,
         $addbuttoninside = false,
         $deletefieldsname = null,
         $deletestring = null
-    ) {
+    ): int {
         $repeats = $this->optional_param($repeathiddenname, $repeats, PARAM_INT);
         if ($deletefieldsname) {
             $removefields = $this->optional_param($deletefieldsname, '', PARAM_TEXT);
@@ -249,16 +260,15 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                     $realelementname = $elementname . "[$i]";
                 }
                 foreach ($elementoptions as $option => $params) {
-
                     switch ($option) {
-                        case 'default' :
+                        case 'default':
                             $mform->setDefault($realelementname, str_replace('{no}', $i + 1, $params));
                             break;
-                        case 'helpbutton' :
+                        case 'helpbutton':
                             $params = array_merge(array($realelementname), $params);
                             call_user_func_array(array(&$mform, 'addHelpButton'), $params);
                             break;
-                        case 'disabledif' :
+                        case 'disabledif':
                             foreach ($namecloned as $num => $name) {
                                 if ($params[0] == $name) {
                                     $params[0] = $params[0] . "[$i]";
@@ -268,7 +278,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                             $params = array_merge(array($realelementname), $params);
                             call_user_func_array(array(&$mform, 'disabledIf'), $params);
                             break;
-                        case 'hideif' :
+                        case 'hideif':
                             foreach ($namecloned as $num => $name) {
                                 if ($params[0] == $name) {
                                     $params[0] = $params[0] . "[$i]";
@@ -278,7 +288,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                             $params = array_merge(array($realelementname), $params);
                             call_user_func_array(array(&$mform, 'hideIf'), $params);
                             break;
-                        case 'rule' :
+                        case 'rule':
                             if (is_string($params)) {
                                 $params = array(null, $params, null, 'client');
                             }
@@ -294,7 +304,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                             $mform->setExpanded($realelementname, $params);
                             break;
 
-                        case 'advanced' :
+                        case 'advanced':
                             $mform->setAdvanced($realelementname, $params);
                             break;
                     }
