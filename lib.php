@@ -29,18 +29,18 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+use core\session\manager;
 
 /**
  * Get plugin file for this block (identical to HTML block)
  *
- * @param stdClass $course course object
- * @param stdClass $birecordorcm block instance record
- * @param stdClass $context context object
- * @param string $filearea file area
- * @param array $args extra arguments
- * @param bool $forcedownload whether or not force download
- * @param array $options additional options affecting the file serving
+ * @param stdClass $course Course object
+ * @param stdClass $birecordorcm Block instance record
+ * @param stdClass $context Context object
+ * @param string $filearea File area
+ * @param array $args Extra arguments
+ * @param bool $forcedownload Whether force download
+ * @param array $options Additional options affecting the file serving
  * @return void
  * @throws coding_exception
  * @throws moodle_exception
@@ -49,8 +49,15 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @category  files
  */
-function block_thumblinks_action_pluginfile($course, $birecordorcm, $context, $filearea, $args, $forcedownload,
-    array $options = array()) {
+function block_thumblinks_action_pluginfile(
+    $course,
+    $birecordorcm,
+    $context,
+    $filearea,
+    $args,
+    $forcedownload,
+    array $options = array()
+) {
     global $CFG, $USER;
 
     if ($context->contextlevel != CONTEXT_BLOCK) {
@@ -87,7 +94,7 @@ function block_thumblinks_action_pluginfile($course, $birecordorcm, $context, $f
     $itemid = array_shift($args);
     $filepath = $args ? '/' . implode('/', $args) . '/' : '/';
 
-    if (!$file = $fs->get_file($context->id, 'block_thumblinks_action', $filearea, $itemid, $filepath, $filename) or
+    if ((!$file = $fs->get_file($context->id, 'block_thumblinks_action', $filearea, $itemid, $filepath, $filename)) ||
         $file->is_directory()) {
         send_file_not_found();
     }
@@ -99,7 +106,7 @@ function block_thumblinks_action_pluginfile($course, $birecordorcm, $context, $f
     } else {
         $forcedownload = true;
     }
-    \core\session\manager::write_close();
+    manager::write_close();
     send_stored_file($file, null, 0, $forcedownload, $options);
 }
 
@@ -116,9 +123,9 @@ function block_thumblinks_action_global_db_replace($search, $replace) {
     $instances = $DB->get_recordset('block_instances', array('blockname' => 'mcms'));
     foreach ($instances as $instance) {
         $config = unserialize(base64_decode($instance->configdata));
-        if (isset($config->text) and is_string($config->text)) {
+        if (isset($config->text) && is_string($config->text)) {
             $config->text = str_replace($search, $replace, $config->text);
-            $DB->update_record('block_instances', [
+            $DB->update_record('block_instances', (object) [
                 'id' => $instance->id,
                 'configdata' => base64_encode(serialize($config)),
                 'timemodified' => time()]);
@@ -135,7 +142,7 @@ function block_thumblinks_action_global_db_replace($search, $replace) {
  * @return array The itemid and the filepath inside the $args path, for the defined filearea.
  */
 function block_thumblinks_action_get_path_from_pluginfile(string $filearea, array $args): array {
-    // This block never has an itemid (the number represents the revision but it's not stored in database).
+    // This block never has an itemid (the number represents the revision, but it's not stored in database).
     array_shift($args);
 
     $itemid = 0;

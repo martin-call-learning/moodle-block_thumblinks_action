@@ -24,8 +24,6 @@
 
 use block_thumblinks_action\output\thumblinks_action;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class block_thumblinks_action
  *
@@ -34,6 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action extends block_base {
+    // TODO links seems to be disfunctionnal, they escape real links.
 
     /**
      * Init function
@@ -56,10 +55,16 @@ class block_thumblinks_action extends block_base {
     /**
      * Content for the block
      *
-     * @return \stdClass|string|null
+     * @return stdClass|string|null
      * @throws coding_exception
      */
     public function get_content() {
+        if (!$this->config) {
+            $this->content = (object) [
+                'text' => get_string("contentnoconfig", "block_thumblinks_action")
+            ];
+            return $this->content;
+        }
 
         if ($this->content !== null) {
             return $this->content;
@@ -80,9 +85,9 @@ class block_thumblinks_action extends block_base {
             $this->title = $this->config->title; // Set the title according to the values in the form.
 
             $renderer = $this->page->get_renderer('core');
-            $titles = empty($this->config->thumbtitle) ? [] : $this->config->thumbtitle;
-            $urls = empty($this->config->thumburl) ? [] : $this->config->thumburl;
-            $images = empty($this->config->thumbimage) ? [] : $this->config->thumbimage;
+            $titles = $this->config->thumbtitle ?? [];
+            $urls = $this->config->thumburl ?? [];
+            $images = $this->config->thumbimage ?? [];
 
             $this->content->text = $renderer->render(
                 new thumblinks_action(
@@ -92,7 +97,8 @@ class block_thumblinks_action extends block_base {
                     $this->config->cta,
                     $this->config->ctatitle,
                     $this->context->id
-                ));
+                )
+            );
         }
 
         return $this->content;
@@ -103,7 +109,7 @@ class block_thumblinks_action extends block_base {
      *
      * @return array
      */
-    public function applicable_formats() {
+    public function applicable_formats(): array {
         return array('all' => true);
     }
 
@@ -112,7 +118,7 @@ class block_thumblinks_action extends block_base {
      *
      * @return bool
      */
-    public function instance_allow_multiple() {
+    public function instance_allow_multiple(): bool {
         return true;
     }
 
@@ -121,7 +127,7 @@ class block_thumblinks_action extends block_base {
      *
      * @return bool
      */
-    public function has_config() {
+    public function has_config(): bool {
         return false;
     }
 
@@ -136,19 +142,22 @@ class block_thumblinks_action extends block_base {
         $config = clone($data);
         // Save the images.
         if ($config->thumbimage) {
-            foreach ($config->thumbimage as $index => $images) {
-                file_save_draft_area_files($images,
+            foreach ($config->thumbimage as $index => $image) {
+                file_save_draft_area_files(
+                    $image,
                     $this->context->id,
                     'block_thumblinks_action',
                     'images',
                     $index,
-                    array('subdirs' => true));
+                    array('subdirs' => true)
+                );
             }
             // Here we make sure we copy the image id into the
             // block parameter. This is then used in save_data
-            // to setup the block to the right image.
+            // to set up the block to the right image.
             $fs = get_file_storage();
-            $files = $fs->get_area_files($this->context->id,
+            $files = $fs->get_area_files(
+                $this->context->id,
                 'block_thumblinks_action',
                 'images'
             );
@@ -167,7 +176,7 @@ class block_thumblinks_action extends block_base {
      *
      * @return bool
      */
-    public function instance_delete() {
+    public function instance_delete(): bool {
         $fs = get_file_storage();
         $fs->delete_area_files($this->context->id, 'block_thumblinks_action');
         return true;
@@ -179,7 +188,7 @@ class block_thumblinks_action extends block_base {
      * @param int $fromid the id number of the block instance to copy from
      * @return boolean
      */
-    public function instance_copy($fromid) {
+    public function instance_copy($fromid): bool {
         global $DB;
 
         $fromcontext = context_block::instance($fromid);
@@ -201,13 +210,16 @@ class block_thumblinks_action extends block_base {
                     'block_thumblinks_action',
                     'images',
                     $itemid,
-                    array('subdirs' => true));
+                    array('subdirs' => true)
+                );
                 file_save_draft_area_files(
                     $draftitemid,
                     $this->context->id,
                     'block_thumblinks_action',
-                    'images', $itemid,
-                    array('subdirs' => true));
+                    'images',
+                    $itemid,
+                    array('subdirs' => true)
+                );
             }
         }
         return true;
