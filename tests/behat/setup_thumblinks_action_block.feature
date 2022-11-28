@@ -32,7 +32,7 @@ Feature: Adding and configuring Thumbnails links action block
   Scenario: Adding Thumbnails links block and several images
     Given I log in as "admin"
     And I am on site homepage
-    And I turn editing mode on
+    And I set editing mode on
     And I add the "Thumbnail links and action" block
     And I configure the "Thumbnail links and action" block
     And I should see "Title"

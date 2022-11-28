@@ -8,7 +8,7 @@ Feature: Adding and configuring Thumbnails links action block and following thei
   Scenario: Setting a thumbnail link and get into it
     Given I log in as "admin"
     And I am on site homepage
-    When I turn editing mode on
+    When I set editing mode on
     And I add the "Thumbnail links and action" block
     And I configure the "Thumbnail links and action" block
     Then I should see "Title"
@@ -28,7 +28,7 @@ Feature: Adding and configuring Thumbnails links action block and following thei
   Scenario: Setting an action link and get into it
     Given I log in as "admin"
     And I am on site homepage
-    And I turn editing mode on
+    And I set editing mode on
     And I add the "Thumbnail links and action" block
     When I configure the "Thumbnail links and action" block
     Then I should see "Title"
