@@ -19,10 +19,9 @@ Feature: Adding and configuring Thumbnails links action block and following thei
     Given I set the field "Title" to "Test thumbnail link"
     And I set the field "Thumbnail 1 Title" to "First Training"
     And I set the field "Thumbnail 1 URL" to "https://moodle.org/"
-    When I press "Save changes"
-    Then "//*[contains(@class, 'block-thumblinks-action')]//a[1]" "xpath_element" should exist
-    Given I click on "//*[contains(@class, 'block-thumblinks-action')]//a[1]" "xpath_element"
-    Then the url should match "https://moodle.org/"
+    And I press "Save changes"
+    Then "First Training" "block_thumblinks_action > Thumbnail link" should exist
+    And "moodle.org" "block_thumblinks_action > Link with URL" should exist
 
   @javascript
   Scenario: Setting an action link and get into it
@@ -38,6 +37,4 @@ Feature: Adding and configuring Thumbnails links action block and following thei
     And I set the field "CALL to Action Title" to "Test Action"
     And I set the field "CALL to Action" to "https://moodle.org/"
     When I press "Save changes"
-    Then "//*[contains(@class, 'block-thumblinks-action')]//*[contains(@class, 'btn btn-primary')]" "xpath_element" should exist
-    Given I click on "//*[contains(@class, 'block-thumblinks-action')]//*[contains(@class, 'btn btn-primary')]" "xpath_element"
-    Then the url should match "https://moodle.org/"
+    And "moodle.org" "block_thumblinks_action > Link with URL" should exist
