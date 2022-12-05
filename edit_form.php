@@ -128,6 +128,7 @@ class block_thumblinks_action_edit_form extends block_edit_form {
                 // Here we could try to use the file_get_submitted_draft_itemid, but it expects to have an itemid defined
                 // Which is not what we have right now, we just have a flat list.
                 $param = optional_param_array($fieldname, 0, PARAM_INT);
+                $draftitemid = null;
                 if (!empty($param[$index])) {
                     $draftitemid = $param[$index];
                 }
