@@ -22,9 +22,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use block_thumblinks_action\output\thumblinks_action;
+namespace block_thumblinks_action;
 
-defined('MOODLE_INTERNAL') || die();
+use advanced_testcase;
+use block_base;
+use block_thumblinks_action\output\thumblinks_action;
+use context_system;
+use context_user;
+use moodle_page;
+use stdClass;
 
 /**
  * Unit tests for block_thumblinks_action
@@ -33,25 +39,19 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action_test extends advanced_testcase {
-
-    /**
-     * Current block
-     *
-     * @var block_base|false|null
-     */
+    /** @var block_base|false|null Current block */
     protected $block = null;
-    /**
-     * Current user
-     *
-     * @var stdClass|null
-     */
+
+    /** @var stdClass|null Current user. */
     protected $user = null;
 
     /**
      * Basic setup for these tests.
+     *
+     * @return void
      */
-    public function setUp() {
-        $this->resetAfterTest(true);
+    public function setUp(): void {
+        $this->resetAfterTest();
         $this->user = $this->getDataGenerator()->create_user();
         $this->setUser($this->user);
         // Create a Sponsor block.
@@ -83,22 +83,26 @@ class block_thumblinks_action_test extends advanced_testcase {
 
     /**
      * Test that output is as expected. This also test file loading into the plugin.
+     *
+     * @covers \block_thumblinks_action::get_content
      */
     public function test_simple_content() {
         // We need to reload the block so config is there.
         $block = block_instance_by_id($this->block->instance->id);
         $content = $block->get_content();
         $this->assertNotNull($content->text);
-        $this->assertContains('background-image: url(https://www.example.com/moodle/pluginfile.php/', $content->text);
-        $this->assertContains('block_thumblinks_action/images/0/img1.png', $content->text);
-        $this->assertContains('block_thumblinks_action/images/1/img2.png', $content->text);
-        $this->assertContains('Title 0', $content->text);
-        $this->assertContains('Title 1', $content->text);
-        $this->assertContains('Moodle forever', $content->text);
+        self::assertTrue((bool) strpos($content->text, 'background-image: url(https://www.example.com/moodle/pluginfile.php/'));
+        self::assertTrue((bool) strpos($content->text, 'block_thumblinks_action/images/0/img1.png'));
+        self::assertTrue((bool) strpos($content->text, 'block_thumblinks_action/images/1/img2.png'));
+        self::assertTrue((bool) strpos($content->text, 'Title 0'));
+        self::assertTrue((bool) strpos($content->text, 'Title 1'));
+        self::assertTrue((bool) strpos($content->text, 'Moodle forever'));
     }
 
     /**
      * Test that output is as expected. This also test file loading into the plugin.
+     *
+     * @covers \block_thumblinks_action\output\thumblinks_action::export_for_template
      */
     public function test_output_renderer_change_files() {
         // We need to reload the block so config is there.
@@ -122,14 +126,11 @@ class block_thumblinks_action_test extends advanced_testcase {
      * Upload a file/image in the block
      *
      * @param array $imagesnames
-     * @throws file_exception
-     * @throws stored_file_creation_exception
      */
     protected function upload_files_in_block($imagesnames) {
         global $CFG;
         $block = block_instance_by_id($this->block->instance->id);
         $usercontext = context_user::instance($this->user->id);
-        $files = [];
         $configdata = (object) [
             'title' => 'block title',
             'cta' => 'https://www.moodle.org',
@@ -149,8 +150,10 @@ class block_thumblinks_action_test extends advanced_testcase {
             // Create an area to upload the file.
             $fs = get_file_storage();
             // Create a file from the string that we made earlier.
-            $file = $fs->create_file_from_pathname($filerecord,
-                $CFG->dirroot . '/blocks/thumblinks_action/tests/fixtures/bookmark-new.png');
+            $file = $fs->create_file_from_pathname(
+                $filerecord,
+                $CFG->dirroot . '/blocks/thumblinks_action/tests/fixtures/bookmark-new.png'
+            );
             $configdata->thumbtitle[] = 'Title ' . $index;
             $configdata->thumburl[] = 'http://moodle.com/' . $index;
             $configdata->thumbimage[] = $file->get_itemid();
@@ -158,4 +161,3 @@ class block_thumblinks_action_test extends advanced_testcase {
         $block->instance_config_save((object) $configdata);
     }
 }
-

@@ -19,8 +19,19 @@
 
     This template renders the main content area for the mcms block.
 
-    Example context (json):
-    {}
+    Example context (json): {
+        "thumbnails":
+            [
+                {
+                    "title":"Heeyyyy",
+                    "url":"https://moodle.org",
+                    "image":"http:\/\/moodlepg.local\/pluginfile.php\/44\/block_thumblinks_action\/images\/0\/Peacock.png"
+                    }
+                ],
+         "ctatitle":"Youtube",
+         "cta":"https://youtube.com"
+         }
+
 }}
 
 <div id="block-thumblinks-action-{{uniqid}}" class="block-thumblinks-action block-cards">
@@ -36,7 +47,7 @@
         </div>
     </div>
     <div class="container text-center mt-5">
-        <a class="btn btn-primary" href="{{ cta }}">
+        <a class="btn btn-primary cta" href="{{ cta }}">
             {{ ctatitle }}
         </a>
     </div>

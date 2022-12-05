@@ -23,13 +23,13 @@
  */
 
 namespace block_thumblinks_action\output;
-defined('MOODLE_INTERNAL') || die();
 
-global $CFG;
-
+use coding_exception;
+use moodle_exception;
 use moodle_url;
 use renderable;
 use renderer_base;
+use stdClass;
 use templatable;
 
 /**
@@ -70,11 +70,11 @@ class thumblinks_action implements renderable, templatable {
      * @param array $thumbtitles
      * @param array $thumbimages
      * @param array $thumburls
-     * @param \moodle_url $cta
+     * @param moodle_url $cta
      * @param string $ctatitle
      * @param int $blockcontextid
-     * @throws \coding_exception
-     * @throws \moodle_exception
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function __construct($thumbtitles, $thumbimages, $thumburls, $cta, $ctatitle, $blockcontextid) {
         $thumbtitlecount = empty($thumbtitles) ? 0 : count($thumbtitles);
@@ -83,25 +83,25 @@ class thumblinks_action implements renderable, templatable {
         $fs = get_file_storage();
 
         for ($itemi = 0; $itemi < $numthumbnails; $itemi++) {
-            $thumbnail = new \stdClass();
-            $thumbnail->title = !empty($thumbtitles[$itemi]) ? $thumbtitles[$itemi] : '';
-            $thumbnail->url = !empty($thumburls[$itemi]) ? $thumburls[$itemi] : null;
+            $thumbnail = new stdClass();
+            $thumbnail->title = $thumbtitles[$itemi] ?? '';
+            $thumbnail->url = $thumburls[$itemi] ?? null;
             $allfiles = $fs->get_area_files($blockcontextid, 'block_thumblinks_action', 'images', $itemi);
             foreach ($allfiles as $file) {
                 if ($file->is_valid_image()) {
-                    $thumbnail->image = \moodle_url::make_pluginfile_url(
+                    $thumbnail->image = moodle_url::make_pluginfile_url(
                         $blockcontextid,
                         'block_thumblinks_action',
                         'images',
                         $itemi,
                         $file->get_filepath(),
                         $file->get_filename()
-                    )->out();
+                    )->out(false);
                 }
             }
             $this->thumbnails[] = $thumbnail;
         }
-        $this->cta = new \moodle_url($cta);
+        $this->cta = new moodle_url($cta);
         $this->ctatitle = $ctatitle;
     }
 
@@ -109,13 +109,13 @@ class thumblinks_action implements renderable, templatable {
      * Export for mustache template
      *
      * @param renderer_base $output
-     * @return array|\stdClass
+     * @return array
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output): array {
         $exportedvalue = [
             'thumbnails' => $this->thumbnails,
             'ctatitle' => $this->ctatitle,
-            'cta' => ($this->cta) ? $this->cta->out() : ''
+            'cta' => ($this->cta) ? $this->cta->out(false) : ''
         ];
         return $exportedvalue;
     }
