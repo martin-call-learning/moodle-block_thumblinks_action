@@ -18,7 +18,7 @@
  * Thumblinks Action block implementation.
  *
  * @package    block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
+ * @copyright 2023 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,7 +28,6 @@ use block_thumblinks_action\output\thumblinks_action;
  * Class block_thumblinks_action
  *
  * @package    block_thumblinks_action
- * @copyright 2020 - CALL Learning - Laurent David <laurent@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_thumblinks_action extends block_base {
