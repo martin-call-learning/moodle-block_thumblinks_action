@@ -21,12 +21,9 @@
  * @copyright 2022 - CALL Learning - Martin CORNU-MANSUY <martin@call-learning.fr>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace block_thumblinks_action;
+namespace block_thumblinks_action\output;
 
 use moodle_url;
-use renderable;
-use renderer_base;
-use templatable;
 
 /**
  * A class to represent a thumbnail in the thumblink_action moodle block.
