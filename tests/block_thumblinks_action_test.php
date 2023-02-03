@@ -115,7 +115,8 @@ class block_thumblinks_action_test extends advanced_testcase {
             $block->config->thumbimage,
             'https://www.moodle.org',
             'Moodle forever',
-            $block->context->id
+            $block->context->id,
+            $block->instance->region ?? ''
         );
         $exported = $renderable->export_for_template($renderer);
         $this->assertStringEndsWith('img4.png', $exported['thumbnails'][0]->image);

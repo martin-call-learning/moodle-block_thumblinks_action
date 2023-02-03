@@ -96,7 +96,7 @@ class block_thumblinks_action extends block_base {
                     $this->config->cta,
                     $this->config->ctatitle,
                     $this->context->id,
-                    $this->instance->region
+                    $this->instance->region ?? ''
                 )
             );
         }
