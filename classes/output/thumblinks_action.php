@@ -65,6 +65,13 @@ class thumblinks_action implements renderable, templatable {
     public $ctatitle = '';
 
     /**
+     * The place where the block takes place.
+     *
+     * @var string $region
+     */
+    public $region = '';
+
+    /**
      * thumblinks_action constructor.
      *
      * @param array $thumbtitles
@@ -76,10 +83,11 @@ class thumblinks_action implements renderable, templatable {
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public function __construct($thumbtitles, $thumbimages, $thumburls, $cta, $ctatitle, $blockcontextid) {
+    public function __construct($thumbtitles, $thumbimages, $thumburls, $cta, $ctatitle, $blockcontextid, $region) {
         $thumbtitlecount = empty($thumbtitles) ? 0 : count($thumbtitles);
         $thumbimgcount = empty($thumbimages) ? 0 : count($thumbimages);
         $numthumbnails = max($thumbtitlecount, $thumbimgcount);
+        $this->region = $region;
         $fs = get_file_storage();
 
         for ($itemi = 0; $itemi < $numthumbnails; $itemi++) {
@@ -115,7 +123,8 @@ class thumblinks_action implements renderable, templatable {
         $exportedvalue = [
             'thumbnails' => $this->thumbnails,
             'ctatitle' => $this->ctatitle,
-            'cta' => ($this->cta) ? $this->cta->out(false) : ''
+            'cta' => ($this->cta) ? $this->cta->out(false) : '',
+            'isonside-pre' => $this->region == 'side-pre'
         ];
         return $exportedvalue;
     }

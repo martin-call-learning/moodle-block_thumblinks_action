@@ -36,9 +36,9 @@
 
 <div id="block-thumblinks-action-{{uniqid}}" class="block-thumblinks-action block-cards">
     <div class="container">
-        <div class="row-fluid d-flex">
+        <div class="row-fluid d-flex {{#isonside-pre}}flex-column{{/isonside-pre}}">
             {{#thumbnails}}
-                <div class="col-sm-12 col-lg-4 pt-3 pt-md-0">
+                <div class="{{^isonside-pre}}col-sm-12 col-lg-4 pt-3 pt-md-0{{/isonside-pre}}">
                     <a class="thumbnail mx-2 my-1 d-flex flex-column justify-content-center"  {{#image}} style="background-image: url({{.}});" {{/image}} href="{{url}}">
                         <div class="title w-100 p-1 p-l-2 mt-5">{{ title }}</div>
                     </a>
